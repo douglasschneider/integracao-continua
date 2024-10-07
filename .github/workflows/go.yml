@@ -43,6 +43,6 @@ jobs:
         os: ['ubuntu-latest', 'ubuntu-22.04']
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/upload-artifact@v4
+    - uses: actions/checkout@v4
     - name: Build
-      run: go build main.go
+      run: go build -v main.go
