@@ -1,0 +1,38 @@
+name: Entrega Contínua
+
+on:
+  workflow_call:
+
+jobs:
+  ec2:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v4.1.8
+      with:
+        name: software
+
+    - uses: actions/checkout@v4
+
+    - name: Deploy to Staging server
+      uses: easingthemes/ssh-deploy@v5.1.0
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        TARGET: /home/${{ secrets.REMOTE_USER }}
+        EXCLUDE: "postgres-data"
+
+    - name: SSH Remote Commands
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+            export DB_HOST=${{ secrets.HOST_DB }}
+            export DB_USER=${{ secrets.USER_DB }}
+            export DB_PASSWORD=${{ secrets.PASSWORD_DB }}
+            export DB_NAME=${{ secrets.DB_NAME }}
+            export DB_PORT=${{ secrets.DB_PORT }}
+            export PORT=8000
