@@ -9,4 +9,4 @@ ENV DB_USER=root DB_PASSWORD=root DB_NAME=root
 
 COPY ./main main
 
-ENTRYPOINT [ "./main" ]
+CMD [ "./main" ]
