@@ -24,7 +24,7 @@ jobs:
       with:
         go-version: ${{ matrix.go_version }}
 
-    - name: Incia banco
+    - name: Init database
       run: docker compose up -d postgres
 
     - name: golangci-lint
@@ -53,4 +53,9 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/docker.yml
+    secrets: inherit
+
+  deploy_ec2:
+    needs: build
+    uses: ./.github/workflows/ec2.yml
     secrets: inherit
