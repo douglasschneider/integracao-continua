@@ -7,11 +7,11 @@ jobs:
   ec2:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4
       with:
         name: software
-    - uses: actions/checkout@v4
 
     - name: Deploy to Staging server
       uses: easingthemes/ssh-deploy@v5.1.0
